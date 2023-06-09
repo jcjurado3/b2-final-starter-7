@@ -3,7 +3,6 @@ class CouponsController < ApplicationController
 
 def index
   @coupons = @merchant.coupons
-  require 'pry'; binding.pry
 end 
 
 private
