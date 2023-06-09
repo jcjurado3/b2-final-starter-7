@@ -10,8 +10,9 @@ def new
 end
 
 def create
-  coupon = Coupon.new(coupon_params)
-  if coupon.save
+  @coupon = Coupon.new(new_coupon_params)
+
+  if @coupon.save
     flash.notice = "Succesfully Created New Coupon"
     redirect_to merchant_coupons_path(@merchant)
   else
@@ -25,8 +26,8 @@ def find_merchant
   @merchant = Merchant.find(params[:merchant_id])
 end
 
-def coupon_params
-  params.permit(:name, :unique_code, :discount, :discount_type)
+def new_coupon_params
+  params.permit(:name, :unique_code, :discount, :discount_type, :merchant_id)
 end  
 
 end

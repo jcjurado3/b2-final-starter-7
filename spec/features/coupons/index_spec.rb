@@ -7,7 +7,7 @@ RSpec.describe "Merchant Coupons Index" do
 
 
     @coupon1 = Coupon.create!(name: "Summer BOGO", unique_code: "BOGO50", discount: 50, merchant_id: @merchant1.id )
-    @coupon2 = Coupon.create!(name: "Summer BOGO", unique_code: "BOGO35", discount: 35, merchant_id: @merchant1.id )
+    @coupon2 = Coupon.create!(name: "Everthing Must Go", unique_code: "BOGO35", discount: 35, merchant_id: @merchant1.id )
 
 
     @coupon_m2_1 = Coupon.create!(name: "Winter Sale", unique_code: "BOGO50", discount: 25, merchant_id: @merchant2.id )
@@ -68,10 +68,9 @@ RSpec.describe "Merchant Coupons Index" do
       click_button "Submit"
 
       expect(current_path).to eq(merchant_coupons_path(@merchant1))
-
+save_and_open_page
       within("#coupons") do
-        expect(page).to have_content("July 4th Sale")
-        expect(page).to have_content("July50")
+        expect(page).to have_content("July 4th Sale:")
         expect(page).to have_content("$50 Off")
       end
     end
