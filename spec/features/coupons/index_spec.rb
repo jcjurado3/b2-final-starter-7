@@ -6,8 +6,8 @@ RSpec.describe "Merchant Coupons Index" do
     @merchant2 = Merchant.create!(name: "Casio Care")
 
 
-    @coupon1 = Coupon.create!(name: "Summer BOGO", unique_code: "BOGO50", discount: 50, merchant_id: @merchant1.id )
-    @coupon2 = Coupon.create!(name: "Everthing Must Go", unique_code: "BOGO35", discount: 35, merchant_id: @merchant1.id )
+    @coupon1 = Coupon.create!(name: "Summer BOGO", unique_code: "BOGO50", discount: 50, merchant_id: @merchant1.id, discount_type: "percent" )
+    @coupon2 = Coupon.create!(name: "Everthing Must Go", unique_code: "BOGO35", discount: 35, merchant_id: @merchant1.id, discount_type: "percent" )
 
 
     @coupon_m2_1 = Coupon.create!(name: "Winter Sale", unique_code: "BOGO50", discount: 25, merchant_id: @merchant2.id )
@@ -64,7 +64,7 @@ RSpec.describe "Merchant Coupons Index" do
       fill_in "Name", with: "July 4th Sale"
       fill_in "Discount Code", with: "July50"
       fill_in "Discount Amount", with: 50
-      fill_in "Discount Type", with: "dollars"
+      select("dollar", from: "Discount Type")
       click_button "Submit"
 
       expect(current_path).to eq(merchant_coupons_path(@merchant1))

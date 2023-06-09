@@ -10,7 +10,13 @@
 <section id="coupons">
         <% @coupons.each do |coupon| %>
           <section id="coupon-<%= coupon.id %>">
-            <li><%= link_to "#{coupon.name}", merchant_coupon_path(@merchant, coupon) %>: <%= coupon.discount %>% Off</li>
+            <li><%= link_to "#{coupon.name}", merchant_coupon_path(@merchant, coupon) %>: 
+            <% if coupon.discount_type == "percent"%>
+            <%= coupon.discount %>% Off
+            <% else %>
+            $<%= coupon.discount %> Off
+            </li>
+            <% end %>
         
           </section>
         <% end %>
