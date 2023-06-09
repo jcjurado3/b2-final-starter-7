@@ -26,6 +26,7 @@ RSpec.describe "Merchant Coupons Index" do
 
     it "displays all names of coupons including amount off with link to coupons show page" do
       visit merchant_coupons_path(@merchant1)
+
       within("#coupon-#{@coupon1.id}") do
         expect(page).to have_content(@coupon1.name)
         expect(page).to have_content("#{@coupon1.discount}% Off")
@@ -49,7 +50,30 @@ RSpec.describe "Merchant Coupons Index" do
 
         expect(page).to_not have_link(@coupon_m2_1.name)
       end
+    end
+  end
 
+  describe "Merchant Coupon Create" do
+    it "has link to create new coupon" do
+      visit merchant_dashboard_index_path(@merchant1)
+
+      expect(page).to have_link("Create New Coupon")
+      click_link("Create New Coupon")
+      expect(current_path).to eq(new_merchant_coupon_path(@merchant1))
+
+      fill_in "Name", with: "July 4th Sale"
+      fill_in "Unique Code", with: "July50"
+      fill_in "Discount Amount", with: 50
+      fill_in "Discount Type", with: "dollars"
+      click_button "Submit"
+
+      expect(current_path).to eq(merchant_dashboard_index_path(@merchant1))
+
+      within("coupons") do
+        expect(page).to have_content("July 4th Sale")
+        expect(page).to have_content("July50")
+        expect(page).to have_content("$50 Off")
+      end
     end
   end
 end
