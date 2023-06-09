@@ -55,21 +55,21 @@ RSpec.describe "Merchant Coupons Index" do
 
   describe "Merchant Coupon Create" do
     it "has link to create new coupon" do
-      visit merchant_dashboard_index_path(@merchant1)
+      visit merchant_coupons_path(@merchant1)
 
       expect(page).to have_link("Create New Coupon")
       click_link("Create New Coupon")
       expect(current_path).to eq(new_merchant_coupon_path(@merchant1))
 
       fill_in "Name", with: "July 4th Sale"
-      fill_in "Unique Code", with: "July50"
+      fill_in "Discount Code", with: "July50"
       fill_in "Discount Amount", with: 50
       fill_in "Discount Type", with: "dollars"
       click_button "Submit"
 
-      expect(current_path).to eq(merchant_dashboard_index_path(@merchant1))
+      expect(current_path).to eq(merchant_coupons_path(@merchant1))
 
-      within("coupons") do
+      within("#coupons") do
         expect(page).to have_content("July 4th Sale")
         expect(page).to have_content("July50")
         expect(page).to have_content("$50 Off")
