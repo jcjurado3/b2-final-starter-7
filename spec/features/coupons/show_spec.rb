@@ -39,6 +39,15 @@ RSpec.describe "Merchant Coupon Show Page " do
     end
 
     it "displays coupon's status and number of times coupon has been used" do
+      visit merchant_coupon_path(@merchant1, @coupon1)
+
+      expect(page).to have_content("Coupon Status: Active")
+      expect(page).to have_content("Times Used: 2")
+
+      visit merchant_coupon_path(@merchant1, @coupon2)
+
+      expect(page).to have_content("Coupon Status: Deactivated")
+      expect(page).to have_content("Times Used: 3")
 
     end
   end
