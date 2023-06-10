@@ -1,0 +1,16 @@
+<%= render partial: "shared/nav" %>
+
+<body>
+  <div class="row">
+    <p class='col-12'><%= @coupon.name %></p>
+  </div>
+
+    <p>Discount Code: <%= @coupon.unique_code %></p><br/>
+    <p><% if @coupon.discount_type == "percent"%>
+            <%= @coupon.discount %>% Off
+            <% else %>
+            $<%= @coupon.discount %> Off
+            
+            <% end %> 
+    </p>
+</body>

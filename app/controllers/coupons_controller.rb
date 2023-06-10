@@ -1,5 +1,5 @@
 class CouponsController < ApplicationController
-  before_action :find_merchant, only: [:new, :create, :index]
+  before_action :find_merchant, only: [:new, :create, :index, :show]
 
 def index
   @coupons = @merchant.coupons
@@ -20,6 +20,10 @@ def create
     redirect_to new_merchant_coupon_path(@merchant)
   end
 end 
+
+def show
+  @coupon = Coupon.find(params[:id])
+end
 
 private
 def find_merchant
