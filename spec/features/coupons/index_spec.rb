@@ -68,11 +68,25 @@ RSpec.describe "Merchant Coupons Index" do
       click_button "Submit"
 
       expect(current_path).to eq(merchant_coupons_path(@merchant1))
-save_and_open_page
+
       within("#coupons") do
         expect(page).to have_content("July 4th Sale:")
         expect(page).to have_content("$50 Off")
       end
+    end
+
+    it "flash error message appears if coupon code is not unique or Merchant has 5 Active Coupons" do
+      visit merchant_coupons_path(@merchant1)
+
+      click_link("Create New Coupon")
+
+      fill_in "Name", with: "July 4th Sale"
+      fill_in "Discount Code", with: "July25"
+      click_button "Submit"
+
+      expect(current_path).to eq(new_merchant_coupon_path(@merchant1))
+
+      expect(page).to have_content("Merchant has 5 Active Coupons or Coupon Code Not Unique")  
     end
   end
 end
