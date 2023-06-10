@@ -1,17 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Coupon, type: :model do
-  describe "validations" do
-    it { should validate_presence_of :name }
-    it { should validate_presence_of :unique_code }
-    it { should validate_presence_of :discount }
-  end
-
-  describe "relationships" do
-    it { should have_many :invoices }
-    it { should belong_to :merchant }
-  end
-
+RSpec.describe "Merchant Coupon Show Page " do
   before(:each) do
     @merchant1 = Merchant.create!(name: "Hair Care")
     @merchant2 = Merchant.create!(name: "Casio Care")
@@ -61,10 +50,39 @@ RSpec.describe Coupon, type: :model do
 
   end
 
-  describe "instance methods" do
-    it "#coupon_use_count" do
-      expect(@coupon1.coupon_use_count).to eq(3)
-      expect(@coupon2.coupon_use_count).to eq(2)
+  describe "Merchant's coupon show page" do
+    it "displays coupon name, discount code, amd discount value" do
+      visit merchant_coupon_path(@merchant1, @coupon1)
+
+      expect(page).to have_content(@coupon1.name)
+      expect(page).to have_content(@coupon1.unique_code)
+      expect(page).to have_content("50% Off")
+
+      expect(page).to_not have_content(@coupon2.name)
+      expect(page).to_not have_content(@coupon2.unique_code)
+      expect(page).to_not have_content("$50 Off")
+
+      visit merchant_coupon_path(@merchant1, @coupon2)
+
+      expect(page).to have_content(@coupon2.name)
+      expect(page).to have_content(@coupon2.unique_code)
+      expect(page).to have_content("$50 Off")
+
+      expect(page).to_not have_content(@coupon1.name)
+      expect(page).to_not have_content(@coupon1.unique_code)
+      expect(page).to_not have_content("50% Off")
+
+    end
+
+    it "displays coupon's status and number of times coupon has been used" do
+      visit merchant_coupon_path(@merchant1, @coupon1)
+      expect(page).to have_content("Coupon Status: active")
+      expect(page).to have_content("Times Used: 3")
+
+      visit merchant_coupon_path(@merchant1, @coupon2)
+
+      expect(page).to have_content("Coupon Status: inactive")
+      expect(page).to have_content("Times Used: 2")
 
     end
   end
