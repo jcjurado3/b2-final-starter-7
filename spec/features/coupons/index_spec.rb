@@ -6,8 +6,8 @@ RSpec.describe "Merchant Coupons Index" do
     @merchant2 = Merchant.create!(name: "Casio Care")
 
 
-    @coupon1 = Coupon.create!(name: "Summer BOGO", unique_code: "BOGO50", discount: 50, merchant_id: @merchant1.id )
-    @coupon2 = Coupon.create!(name: "Summer BOGO", unique_code: "BOGO35", discount: 35, merchant_id: @merchant1.id )
+    @coupon1 = Coupon.create!(name: "Summer BOGO", unique_code: "BOGO50", discount: 50, merchant_id: @merchant1.id, discount_type: "percent" )
+    @coupon2 = Coupon.create!(name: "Everthing Must Go", unique_code: "BOGO35", discount: 35, merchant_id: @merchant1.id, discount_type: "percent" )
 
 
     @coupon_m2_1 = Coupon.create!(name: "Winter Sale", unique_code: "BOGO50", discount: 25, merchant_id: @merchant2.id )
@@ -26,6 +26,7 @@ RSpec.describe "Merchant Coupons Index" do
 
     it "displays all names of coupons including amount off with link to coupons show page" do
       visit merchant_coupons_path(@merchant1)
+
       within("#coupon-#{@coupon1.id}") do
         expect(page).to have_content(@coupon1.name)
         expect(page).to have_content("#{@coupon1.discount}% Off")
@@ -49,7 +50,43 @@ RSpec.describe "Merchant Coupons Index" do
 
         expect(page).to_not have_link(@coupon_m2_1.name)
       end
+    end
+  end
 
+  describe "Merchant Coupon Create" do
+    it "has link to create new coupon" do
+      visit merchant_coupons_path(@merchant1)
+
+      expect(page).to have_link("Create New Coupon")
+      click_link("Create New Coupon")
+      expect(current_path).to eq(new_merchant_coupon_path(@merchant1))
+
+      fill_in "Name", with: "July 4th Sale"
+      fill_in "Discount Code", with: "July50"
+      fill_in "Discount Amount", with: 50
+      select("dollar", from: "Discount Type")
+      click_button "Submit"
+
+      expect(current_path).to eq(merchant_coupons_path(@merchant1))
+
+      within("#coupons") do
+        expect(page).to have_content("July 4th Sale:")
+        expect(page).to have_content("$50 Off")
+      end
+    end
+
+    it "flash error message appears if coupon code is not unique or Merchant has 5 Active Coupons" do
+      visit merchant_coupons_path(@merchant1)
+
+      click_link("Create New Coupon")
+
+      fill_in "Name", with: "July 4th Sale"
+      fill_in "Discount Code", with: "July25"
+      click_button "Submit"
+
+      expect(current_path).to eq(new_merchant_coupon_path(@merchant1))
+
+      expect(page).to have_content("Merchant has 5 Active Coupons or Coupon Code Not Unique")  
     end
   end
 end

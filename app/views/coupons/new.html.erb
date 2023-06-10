@@ -1,0 +1,13 @@
+<%= render partial: "shared/nav" %>
+
+<%= form_with url: merchant_coupons_path(@merchant), method: :post, local: true do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name %><br/><br/>
+  <%= f.label :unique_code, "Discount Code" %>
+  <%= f.text_field :unique_code  %><br/><br/>
+  <%= f.label :discount, "Discount Amount" %>
+  <%= f.number_field :discount %><br/><br/>
+  <%= f.label :discount_type, "Discount Type" %>
+  <%= f.select(:discount_type, ["dollar", "percent"])  %><br/><br/>
+  <%= f.submit 'Submit'%>
+<% end %>
