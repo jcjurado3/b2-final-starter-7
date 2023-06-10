@@ -6,11 +6,13 @@
   </div>
 
     <p>Discount Code: <%= @coupon.unique_code %></p><br/>
-    <p><% if @coupon.discount_type == "percent"%>
+    <p>Discount Type: <% if @coupon.discount_type == "percent"%>
             <%= @coupon.discount %>% Off
             <% else %>
             $<%= @coupon.discount %> Off
-            
             <% end %> 
     </p>
+    <p>Coupon Status: <%= @coupon.status %></p>
+    <p>Times Used: <%= @coupon.coupon_use_count %></p>
+
 </body>
