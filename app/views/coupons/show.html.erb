@@ -14,5 +14,6 @@
     </p>
     <p>Coupon Status: <%= @coupon.status %></p>
     <p>Times Used: <%= @coupon.coupon_use_count %></p>
+    <p> <%= button_to "Deactivate", merchant_coupon_status_path(@merchant, @coupon), method: :patch, params: {status: "inactive"} %> </p>
 
 </body>

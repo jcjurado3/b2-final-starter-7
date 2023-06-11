@@ -5,7 +5,7 @@ class Coupon < ApplicationRecord
 
   belongs_to :merchant
   has_many :invoices
-  enum status: {inactive: 0, active: 1}
+  enum status: [:inactive, :active]
 
 def coupon_use_count
 invoices.joins(:transactions)

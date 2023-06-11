@@ -92,11 +92,11 @@ RSpec.describe "Merchant Coupon Show Page " do
     visit merchant_coupon_path(@merchant1, @coupon1)
     coupon = Coupon.find(@coupon1.id)
 
-    expect(coupon.status).to eq("active")
+    expect(page).to have_content("Coupon Status: active")
     expect(page).to have_button("Deactivate")
     click_button "Deactivate"
 
-    expect(coupon.status).to eq("inactive")
+    expect(page).to have_content("Coupon Status: inactive")
     end
   end
 end
