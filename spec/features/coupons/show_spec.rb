@@ -94,9 +94,20 @@ RSpec.describe "Merchant Coupon Show Page " do
 
     expect(page).to have_content("Coupon Status: active")
     expect(page).to have_button("Deactivate")
+    expect(page).to_not have_button("Activate")
     click_button "Deactivate"
 
     expect(page).to have_content("Coupon Status: inactive")
     end
+
+    it "displays button to activate coupon" do
+      visit merchant_coupon_path(@merchant1, @coupon2)
+  
+      expect(page).to have_content("Coupon Status: inactive")
+      expect(page).to have_button("Activate")
+      click_button "Activate"
+  
+      expect(page).to have_content("Coupon Status: active")
+      end
   end
 end
