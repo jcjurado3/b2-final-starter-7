@@ -6,8 +6,12 @@ RSpec.describe "Merchant Coupons Index" do
     @merchant2 = Merchant.create!(name: "Casio Care")
 
 
-    @coupon1 = Coupon.create!(name: "Summer BOGO", unique_code: "BOGO50", discount: 50, merchant_id: @merchant1.id, discount_type: "percent" )
-    @coupon2 = Coupon.create!(name: "Everthing Must Go", unique_code: "BOGO35", discount: 35, merchant_id: @merchant1.id, discount_type: "percent" )
+    @coupon1 = Coupon.create!(name: "Summer BOGO", unique_code: "BOGO50", discount: 50, merchant_id: @merchant1.id, discount_type: "percent", status: 1 )
+    @coupon2 = Coupon.create!(name: "Everthing Must Go", unique_code: "BOGO35", discount: 35, merchant_id: @merchant1.id, discount_type: "percent", status: 0 )
+    @coupon3 = Coupon.create!(name: "July4th", unique_code: "4SALE", discount: 15, merchant_id: @merchant1.id, discount_type: "dollar", status: 1 )
+    @coupon4 = Coupon.create!(name: "Winter Sale", unique_code: "WINTER35", discount: 35, merchant_id: @merchant1.id, discount_type: "dollar", status: 1 )
+    @coupon5 = Coupon.create!(name: "Fall Sale", unique_code: "FALL10", discount: 10, merchant_id: @merchant1.id, discount_type: "percent", status: 0 )
+    @coupon6 = Coupon.create!(name: "XMAS Sale", unique_code: "XMAS35", discount: 25, merchant_id: @merchant1.id, discount_type: "percent", status: 0 )
 
 
     @coupon_m2_1 = Coupon.create!(name: "Winter Sale", unique_code: "BOGO50", discount: 25, merchant_id: @merchant2.id )
@@ -87,6 +91,28 @@ RSpec.describe "Merchant Coupons Index" do
       expect(current_path).to eq(new_merchant_coupon_path(@merchant1))
 
       expect(page).to have_content("Merchant has 5 Active Coupons or Coupon Code Not Unique")  
+    end
+  end
+
+  describe "Merchant Coupon Index Sorted" do
+    it "active coupons section" do
+      visit merchant_coupons_path(@merchant1)
+
+      within("#active_coupons") do
+        expect(page).to have_content(@coupon1.name)
+        expect(page).to have_content(@coupon3.name)
+        expect(page).to have_content(@coupon4.name)
+      end
+    end
+
+    it "inactive coupons section" do
+      visit merchant_coupons_path(@merchant1)
+
+      within("#inactive_coupons") do
+        expect(page).to have_content(@coupon2.name)
+        expect(page).to have_content(@coupon5.name)
+        expect(page).to have_content(@coupon6.name)
+      end
     end
   end
 end

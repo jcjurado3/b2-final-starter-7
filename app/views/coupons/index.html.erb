@@ -8,7 +8,35 @@
   <p><%= link_to "Create New Coupon", new_merchant_coupon_path(@merchant) %></p>
 
 <section id="coupons">
-        <% @coupons.each do |coupon| %>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="column-header">
+        <p>Active Coupons</p>
+      </div>
+        <ul>
+        <div id="active_coupons">
+          <% @active_coupons.each do |coupon| %>
+            <section id="coupon-<%= coupon.id %>">
+              <li><%= link_to "#{coupon.name}", merchant_coupon_path(@merchant, coupon) %>: 
+              <% if coupon.discount_type == "percent"%>
+              <%= coupon.discount %>% Off
+              <% else %>
+              $<%= coupon.discount %> Off
+              </li>
+              <% end %>
+            </section>
+          <% end %>
+        </div>
+        </ul>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="column-header">
+        <p>Inactive Coupons</p>
+      </div>
+        <ul>
+        <div id="inactive_coupons">
+        <% @inactive_coupons.each do |coupon| %>
           <section id="coupon-<%= coupon.id %>">
             <li><%= link_to "#{coupon.name}", merchant_coupon_path(@merchant, coupon) %>: 
             <% if coupon.discount_type == "percent"%>
@@ -17,9 +45,15 @@
             $<%= coupon.discount %> Off
             </li>
             <% end %>
-        
           </section>
         <% end %>
-      </section>
+        </ul>
+    </div>
+
+
+  </div>
+</section>
+
+
 
 </body>
