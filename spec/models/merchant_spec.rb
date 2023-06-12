@@ -177,11 +177,11 @@ describe Merchant do
       expect(@merchant2.disabled_items).to eq([@item_5, @item_6])
     end
 
-    it "active_items" do
+    it "active_coupons" do
       expect(@merchant1.active_coupons).to eq([@coupon1, @coupon3, @coupon4])
     end
 
-    it "inactive_items" do
+    it "inactive_coupons" do
       expect(@merchant1.inactive_coupons).to eq([@coupon2, @coupon5, @coupon6])
     end
   end
