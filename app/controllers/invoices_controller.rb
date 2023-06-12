@@ -9,6 +9,7 @@ class InvoicesController < ApplicationController
   def show
     @customer = @invoice.customer
     @invoice_item = InvoiceItem.where(invoice_id: params[:id]).first
+    @coupon = @invoice.coupon
   end
 
   def update
