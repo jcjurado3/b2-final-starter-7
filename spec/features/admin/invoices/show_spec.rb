@@ -4,10 +4,14 @@ describe "Admin Invoices Index Page" do
   before :each do
     @m1 = Merchant.create!(name: "Merchant 1")
 
+    @coupon1 = Coupon.create!(name: "Summer BOGO", unique_code: "BOGO50", discount: 50, merchant_id: @m1.id, discount_type: "percent", status: 1 )
+    @coupon2 = Coupon.create!(name: "Everthing Must Go", unique_code: "BOGO35", discount: 35, merchant_id: @m1.id, discount_type: "percent", status: 0 )
+    @coupon3 = Coupon.create!(name: "July4th", unique_code: "4SALE", discount: 5, merchant_id: @m1.id, discount_type: "dollar", status: 1 )
+
     @c1 = Customer.create!(first_name: "Yo", last_name: "Yoz", address: "123 Heyyo", city: "Whoville", state: "CO", zip: 12345)
     @c2 = Customer.create!(first_name: "Hey", last_name: "Heyz")
 
-    @i1 = Invoice.create!(customer_id: @c1.id, status: 2, created_at: "2012-03-25 09:54:09")
+    @i1 = Invoice.create!(customer_id: @c1.id, status: 2, created_at: "2012-03-25 09:54:09", coupon_id: @coupon1.id)
     @i2 = Invoice.create!(customer_id: @c2.id, status: 1, created_at: "2012-03-25 09:30:09")
 
     @item_1 = Item.create!(name: "test", description: "lalala", unit_price: 6, merchant_id: @m1.id)
@@ -68,5 +72,13 @@ describe "Admin Invoices Index Page" do
       expect(current_path).to eq(admin_invoice_path(@i1))
       expect(@i1.status).to eq("completed")
     end
+  end
+
+  it "should display both the subtotal and the grand total for invoice" do
+    expect(page).to have_content("Sub Total: $#{@i1.total_revenue}")
+    expect(page).to have_content("Grand Total: $#{@i1.grand_total}")
+    
+    expect(page).to_not have_content(@i2.total_revenue)
+    expect(page).to_not have_content(@i2.grand_total)
   end
 end
