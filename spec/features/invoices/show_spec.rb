@@ -122,7 +122,7 @@ RSpec.describe "invoices show" do
 
     expect(page).to have_content("Sub Total: $#{@invoice_2.total_revenue}")
     expect(page).to have_content("Grand Total: $#{@invoice_2.grand_total}")
-save_and_open_page
+
     expect(page).to have_content(@coupon3.name)
     expect(page).to have_link(@coupon3.name)
   end
