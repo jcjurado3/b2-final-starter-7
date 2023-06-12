@@ -30,7 +30,7 @@ RSpec.describe "invoices show" do
     @customer_6 = Customer.create!(first_name: "Herber", last_name: "Kuhn")
 
     @invoice_1 = Invoice.create!(customer_id: @customer_1.id, status: 2, created_at: "2012-03-27 14:54:09", coupon_id: @coupon1.id)
-    @invoice_2 = Invoice.create!(customer_id: @customer_1.id, status: 2, created_at: "2012-03-28 14:54:09")
+    @invoice_2 = Invoice.create!(customer_id: @customer_1.id, status: 2, created_at: "2012-03-28 14:54:09", coupon_id: @coupon3.id)
     @invoice_3 = Invoice.create!(customer_id: @customer_2.id, status: 2)
     @invoice_4 = Invoice.create!(customer_id: @customer_3.id, status: 2)
     @invoice_5 = Invoice.create!(customer_id: @customer_4.id, status: 2)
@@ -40,7 +40,7 @@ RSpec.describe "invoices show" do
     @invoice_8 = Invoice.create!(customer_id: @customer_6.id, status: 1)
 
     @ii_1 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_1.id, quantity: 9, unit_price: 10, status: 2)
-    @ii_2 = InvoiceItem.create!(invoice_id: @invoice_2.id, item_id: @item_1.id, quantity: 1, unit_price: 10, status: 2)
+    @ii_2 = InvoiceItem.create!(invoice_id: @invoice_2.id, item_id: @item_1.id, quantity: 1, unit_price: 20, status: 2)
     @ii_3 = InvoiceItem.create!(invoice_id: @invoice_3.id, item_id: @item_2.id, quantity: 2, unit_price: 8, status: 2)
     @ii_4 = InvoiceItem.create!(invoice_id: @invoice_4.id, item_id: @item_3.id, quantity: 3, unit_price: 5, status: 1)
     @ii_6 = InvoiceItem.create!(invoice_id: @invoice_5.id, item_id: @item_4.id, quantity: 1, unit_price: 1, status: 1)
@@ -107,14 +107,24 @@ RSpec.describe "invoices show" do
     end
   end
 
-  it "shows Subtotal and Grand Total Revenues" do
+  it "shows Subtotal and Grand Total Revenues for percent discount type" do
     visit merchant_invoice_path(@merchant1, @invoice_1)
-save_and_open_page
+
     expect(page).to have_content("Sub Total: $#{@invoice_1.total_revenue}")
     expect(page).to have_content("Grand Total: $#{@invoice_1.grand_total}")
 
     expect(page).to have_content(@coupon1.name)
     expect(page).to have_link(@coupon1.name)
+  end
+
+  it "shows Subtotal and Grand Total Revenues for dollar discount type" do
+    visit merchant_invoice_path(@merchant1, @invoice_2)
+
+    expect(page).to have_content("Sub Total: $#{@invoice_2.total_revenue}")
+    expect(page).to have_content("Grand Total: $#{@invoice_2.grand_total}")
+save_and_open_page
+    expect(page).to have_content(@coupon3.name)
+    expect(page).to have_link(@coupon3.name)
   end
 
 end

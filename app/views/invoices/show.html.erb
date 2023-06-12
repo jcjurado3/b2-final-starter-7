@@ -14,7 +14,11 @@
   <p>Total Revenue: <%= number_to_currency(@invoice.total_revenue) %></p>
   <p>Sub Total: <%= number_to_currency(@invoice.total_revenue) %></p>
   <p>Grand Total: <%= number_to_currency(@invoice.grand_total) %></p>
-  <p>Coupon Used: <%= link_to "#{@coupon.name}, #{@coupon.unique_code}", merchant_coupon_path(@merchant, @coupon)%> </p>
+  <p> 
+    <% if @coupon != nil %>
+  Coupon Used: <%= link_to "#{@coupon.name}, #{@coupon.unique_code}", merchant_coupon_path(@merchant, @coupon)%>
+    <% end %>
+  </p>
 
 
 
