@@ -1,0 +1,23 @@
+<%= render partial: "shared/nav" %>
+
+<body>
+  <div class="row">
+    <p class='col-12'><%= @coupon.name %></p>
+  </div>
+
+    <p>Discount Code: <%= @coupon.unique_code %></p><br/>
+    <p>Discount Type: <% if @coupon.discount_type == "percent"%>
+            <%= @coupon.discount %>% Off
+            <% else %>
+            $<%= @coupon.discount %> Off
+            <% end %> 
+    </p>
+    <p>Coupon Status: <%= @coupon.status %></p>
+    <p>Times Used: <%= @coupon.coupon_use_count %></p>
+    <p> <% if @coupon.status == "active"%>
+        <%= button_to "Deactivate", merchant_coupon_status_path(@merchant, @coupon), method: :patch, params: {status: "inactive"} %>
+        <% else %>
+        <%= button_to "Activate", merchant_coupon_status_path(@merchant, @coupon), method: :patch, params: {status: "active"} %> 
+        <% end %>
+        </p>
+</body>

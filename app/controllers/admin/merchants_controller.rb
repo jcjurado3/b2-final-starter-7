@@ -4,6 +4,7 @@ class Admin::MerchantsController < ApplicationController
     @merchants = Merchant.all
     @enabled_merchants = Merchant.enabled
     @disabled_merchants = Merchant.disabled
+    # @holiday_image = HolidaySearch.new.holiday_image.holiday_name
   end
 
   def show

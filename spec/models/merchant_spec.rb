@@ -6,6 +6,7 @@ describe Merchant do
   end
   describe "relationships" do
     it { should have_many :items }
+    it { should have_many :coupons }
     it { should have_many(:invoice_items).through(:items) }
     it {should have_many(:invoices).through(:invoice_items)}
     it { should have_many(:customers).through(:invoices) }
@@ -94,6 +95,13 @@ describe Merchant do
       @merchant1 = Merchant.create!(name: 'Hair Care')
       @merchant2 = Merchant.create!(name: 'Jewelry')
 
+      @coupon1 = Coupon.create!(name: "Summer BOGO", unique_code: "BOGO50", discount: 50, merchant_id: @merchant1.id, discount_type: "percent", status: 1 )
+      @coupon2 = Coupon.create!(name: "Everthing Must Go", unique_code: "BOGO35", discount: 35, merchant_id: @merchant1.id, discount_type: "percent", status: 0 )
+      @coupon3 = Coupon.create!(name: "July4th", unique_code: "4SALE", discount: 15, merchant_id: @merchant1.id, discount_type: "dollar", status: 1 )
+      @coupon4 = Coupon.create!(name: "Winter Sale", unique_code: "WINTER35", discount: 35, merchant_id: @merchant1.id, discount_type: "dollar", status: 1 )
+      @coupon5 = Coupon.create!(name: "Fall Sale", unique_code: "FALL10", discount: 10, merchant_id: @merchant1.id, discount_type: "percent", status: 0 )
+      @coupon6 = Coupon.create!(name: "XMAS Sale", unique_code: "XMAS35", discount: 25, merchant_id: @merchant1.id, discount_type: "percent", status: 0 )
+
       @item_1 = Item.create!(name: "Shampoo", description: "This washes your hair", unit_price: 10, merchant_id: @merchant1.id, status: 1)
       @item_2 = Item.create!(name: "Conditioner", description: "This makes your hair shiny", unit_price: 8, merchant_id: @merchant1.id)
       @item_3 = Item.create!(name: "Brush", description: "This takes out tangles", unit_price: 5, merchant_id: @merchant1.id)
@@ -168,5 +176,17 @@ describe Merchant do
       expect(@merchant1.disabled_items).to eq([@item_2, @item_3, @item_4, @item_7, @item_8])
       expect(@merchant2.disabled_items).to eq([@item_5, @item_6])
     end
+
+    it "active_coupons" do
+      expect(@merchant1.active_coupons).to eq([@coupon1, @coupon3, @coupon4])
+    end
+
+    it "inactive_coupons" do
+      expect(@merchant1.inactive_coupons).to eq([@coupon2, @coupon5, @coupon6])
+    end
+
+    it "#active_coupon_check" do
+    expect(@merchant1.active_coupon_check).to eq(false)
+  end
   end
 end
