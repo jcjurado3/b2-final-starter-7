@@ -70,4 +70,8 @@ class Merchant < ApplicationRecord
   def inactive_coupons
     coupons.where(status: 0)
   end
+
+  def active_coupon_check
+    coupons.where(status: 1).count >= 5
+  end
 end

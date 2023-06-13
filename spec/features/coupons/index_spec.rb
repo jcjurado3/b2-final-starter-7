@@ -14,7 +14,7 @@ RSpec.describe "Merchant Coupons Index" do
     @coupon6 = Coupon.create!(name: "XMAS Sale", unique_code: "XMAS35", discount: 25, merchant_id: @merchant1.id, discount_type: "percent", status: 0 )
 
 
-    @coupon_m2_1 = Coupon.create!(name: "Winter Sale", unique_code: "BOGO50", discount: 25, merchant_id: @merchant2.id )
+    @coupon_m2_1 = Coupon.create!(name: "Winter Sale", unique_code: "BOGO25", discount: 25, merchant_id: @merchant2.id, discount_type: "dollar" )
 
   end
   describe "Coupon Index Page" do
@@ -79,18 +79,38 @@ RSpec.describe "Merchant Coupons Index" do
       end
     end
 
-    it "flash error message appears if coupon code is not unique or Merchant has 5 Active Coupons" do
+    it "flash error message appears if coupon code is not unique" do
       visit merchant_coupons_path(@merchant1)
 
       click_link("Create New Coupon")
 
       fill_in "Name", with: "July 4th Sale"
-      fill_in "Discount Code", with: "July25"
+      fill_in "Discount Code", with: "BOGO50"
+      fill_in "Discount Amount", with: 50
+      select("dollar", from: "Discount Type")
       click_button "Submit"
 
       expect(current_path).to eq(new_merchant_coupon_path(@merchant1))
+      expect(page).to have_content("Coupon Code Not Unique")  
+    end
 
-      expect(page).to have_content("Merchant has 5 Active Coupons or Coupon Code Not Unique")  
+    it "flash error message appears if merchant has 5 active coupons" do
+        @coupon7 = Coupon.create!(name: "XMAS 25", unique_code: "XMAS25", discount: 25, merchant_id: @merchant1.id, discount_type: "percent", status: 1 )
+        @coupon8 = Coupon.create!(name: "XMAS 15", unique_code: "XMAS15", discount: 25, merchant_id: @merchant1.id, discount_type: "percent", status: 1 )
+
+
+      visit merchant_coupons_path(@merchant1)
+
+      click_link("Create New Coupon")
+
+      fill_in "Name", with: "July Sale"
+      fill_in "Discount Code", with: "July5"
+      fill_in "Discount Amount", with: 5
+      select("percent", from: "Discount Type")
+      click_button "Submit"
+
+      expect(current_path).to eq(new_merchant_coupon_path(@merchant1))
+      expect(page).to have_content("Merchant has 5 Active Coupons")  
     end
   end
 
