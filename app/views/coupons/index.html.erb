@@ -53,6 +53,27 @@
 
   </div>
 </section>
+<br>
+<br>
+<br>
+
+<section>
+  <div class="row">
+    <p class='col-12'>Upcoming Events</p>
+  </div>
+  <% @holidays.each do |holiday|  %>
+  <div class="col-sm-4">
+      <div class="column-header">
+        <p> <%= holiday.name %> </p>
+        <p> <%= holiday.date %> </p>
+      </div>
+      <div class="image">
+      <%= image_tag @image_juneteenth %> 
+      </div>
+  </div>
+  <% end %>
+
+</section>
 
 
 
