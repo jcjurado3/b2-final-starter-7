@@ -5,7 +5,7 @@ def index
   @active_coupons = @merchant.active_coupons
   @inactive_coupons = @merchant.inactive_coupons
   @holidays = HolidayService.new.holiday_info.first(3)
-  @image_juneteenth = ImageSearch.new.image_search("juneteenth").image_small_url
+  @image_juneteenth = ImageSearch.new.image_search("Independence Day").image_small_url
 
 end
 
