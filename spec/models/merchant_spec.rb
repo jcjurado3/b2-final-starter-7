@@ -184,5 +184,9 @@ describe Merchant do
     it "inactive_coupons" do
       expect(@merchant1.inactive_coupons).to eq([@coupon2, @coupon5, @coupon6])
     end
+
+    it "#active_coupon_check" do
+    expect(@merchant1.active_coupon_check).to eq(false)
+  end
   end
 end

@@ -16,11 +16,14 @@ end
 def create
   @coupon = Coupon.new(new_coupon_params)
 
-  if @coupon.save
+  if @merchant.active_coupon_check == true
+    flash.notice = "Merchant has 5 Active Coupons"
+    redirect_to new_merchant_coupon_path(@merchant)
+  elsif @coupon.save
     flash.notice = "Succesfully Created New Coupon"
     redirect_to merchant_coupons_path(@merchant)
   else
-    flash.notice = "Merchant has 5 Active Coupons or Coupon Code Not Unique"
+    flash.notice = "Coupon Code Not Unique"
     redirect_to new_merchant_coupon_path(@merchant)
   end
 end 

@@ -5,6 +5,8 @@ RSpec.describe Coupon, type: :model do
     it { should validate_presence_of :name }
     it { should validate_presence_of :unique_code }
     it { should validate_presence_of :discount }
+    it { should validate_uniqueness_of :unique_code }
+
   end
 
   describe "relationships" do
@@ -21,7 +23,7 @@ RSpec.describe Coupon, type: :model do
     @coupon2 = Coupon.create!(name: "Everthing Must Go", unique_code: "TAKE50", discount: 50, merchant_id: @merchant1.id, discount_type: "dollar", status: 0 )
 
 
-    @coupon_m2_1 = Coupon.create!(name: "Winter Sale", unique_code: "WINTER50", discount: 25, merchant_id: @merchant2.id )
+    @coupon_m2_1 = Coupon.create!(name: "Winter Sale", unique_code: "WINTER50", discount: 25, merchant_id: @merchant2.id, discount_type: "dollar" )
 
     @customer_1 = Customer.create!(first_name: "Joey", last_name: "Smith")
     @customer_2 = Customer.create!(first_name: "Cecilia", last_name: "Jones")
@@ -65,7 +67,6 @@ RSpec.describe Coupon, type: :model do
     it "#coupon_use_count" do
       expect(@coupon1.coupon_use_count).to eq(3)
       expect(@coupon2.coupon_use_count).to eq(2)
-
     end
   end
 end
